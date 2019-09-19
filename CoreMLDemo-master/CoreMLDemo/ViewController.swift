@@ -143,12 +143,6 @@ extension ViewController: UIImagePickerControllerDelegate {
                         objectBounds.origin.x = objectBounds.origin.x + xIncrement
                         objectBounds.origin.y = objectBounds.origin.y + yIncrement
                         
-                        //let view = UIView()
-                        //view.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
-                        
-                        //self.imageView.addSubview(view)
-                        //view.frame = objectBounds
-                        
                         let shapeLayer = self.createRoundedRectLayerWithBounds(objectBounds)
                         
                         let textLayer = self.createTextSubLayerInBounds(objectBounds,
@@ -157,70 +151,12 @@ extension ViewController: UIImagePickerControllerDelegate {
                         
                         shapeLayer.addSublayer(textLayer)
                         self.imageView.layer.addSublayer(shapeLayer)
-                        
-                        //let shapeLayer = self.createRoundedRectLayerWithBounds(objectBounds)
-                        
-                        //let textLayer = self.createTextSubLayerInBounds(objectBounds,
-//                                                                        identifier: topLabelObservation.identifier,
-//                                                                        confidence: topLabelObservation.confidence)
-//                        shapeLayer.addSublayer(textLayer)
-//                        detectionOverlay.addSublayer(shapeLayer)
                     }
-                    //self.drawVisionRequestResults(results)
                 }
             })
         })
         
         try! imageRequestHandler.perform([objectRecognition])
-        
-        /*guard let prediction2 = try? model_2.prediction(input: ObjectDetectorInput(image: pixelBuffer!, iouThreshold: 0.1, confidenceThreshold: 0.1)) else {
-            return
-        }
-        print(prediction2.confidence)
-        print(prediction2.coordinates)
-        print(prediction2.featureNames)
-        
-        
-        
-        /*for observation in prediction2 where observation is VNRecognizedObjectObservation {
-            guard let objectObservation = observation as? VNRecognizedObjectObservation else {
-                continue
-            }
-            // Select only the label with the highest confidence.
-            let topLabelObservation = objectObservation.labels[0]
-            let objectBounds = VNImageRectForNormalizedRect(objectObservation.boundingBox, Int(bufferSize.width), Int(bufferSize.height))
-        }*/
-        for coordinate in prediction2.coordinates.shape {
-            print(coordinate)
-        }
-        
-        print(prediction2.featureValue(for: "coordinates"))
-        
-        print(prediction2.coordinates)
-        
-        print(prediction2.coordinates.strides)
-        
-        let numberOfBoxes = Int(truncating: prediction2.coordinates.shape[0])
-        var coordinatesArray = [[CGFloat]]()
-        for i in 0...numberOfBoxes {
-            coordinatesArray.append([CGFloat(truncating: prediction2.coordinates[i * 4]),
-                                     CGFloat(truncating: prediction2.coordinates[i * 4 + 1]),
-                                     CGFloat(truncating: prediction2.coordinates[i * 4 + 2]),
-                                     CGFloat(truncating: prediction2.coordinates[i * 4 + 3])])
-        }
-        
-        for coordinates in coordinatesArray {
-            let view = UIView()
-            view.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
-            
-            let xValue = imageView.frame.width * coordinates[0] - imageView.frame.width * coordinates[2] / 2.0
-            let yValue = imageView.frame.height * coordinates[1] - imageView.frame.height * coordinates[3] / 2.0
-            let width = imageView.frame.width * coordinates[2]
-            let height = imageView.frame.height * coordinates[3]
-            
-            self.imageView.addSubview(view)
-            view.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
-        }*/
     }
     
     func createTextSubLayerInBounds(_ bounds: CGRect, identifier: String, confidence: VNConfidence) -> CATextLayer {
